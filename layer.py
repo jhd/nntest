@@ -8,10 +8,6 @@ class Layer():
 
     def eval(self, inputs):
 
-        if len(inputs) != len(self.neurons):
-
-            return []
-
         outputs = []
 
         for neuron in self.neurons:

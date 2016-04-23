@@ -19,7 +19,7 @@ class NeuralNetwork():
 
             self.network.append(layer)
 
-    def randomLayersInit(self, layers):
+    def randomLayersInit(self, layers, startInputs):
         #layers format: [number of input neurons, number of sigs for this layer...]
 
         if len(layers) <= 2:
@@ -31,7 +31,7 @@ class NeuralNetwork():
         inputs = []
         for input in range(0, layers[0]):
             
-            inputs.append(InputNeuron(numpy.random.uniform(0, 1)))
+            inputs.append(InputNeuron(startInputs[input]))
 
         self.network.append(Layer(inputs))
 
@@ -41,7 +41,7 @@ class NeuralNetwork():
 
             for neuron in range(0, layerLength):
 
-                neurons.append(Sigmoid([numpy.random.uniform(0, 1) for startWeight in range(0, len(self.network[:1]))], numpy.random.uniform(0, 1)))
+                neurons.append(Sigmoid([numpy.random.uniform(0, 1) for startWeight in range(0, len(self.network[len(self.network)-1].neurons))], numpy.random.uniform(0, 1)))
 
             self.network.append(Layer(neurons))
 
@@ -80,6 +80,6 @@ nn = NeuralNetwork([layerIn, layerHidden, layerOut])
 #print nn.eval([0.9, 0.1])
 
 nnRand = NeuralNetwork()
-nnRand.randomLayersInit([2, 2, 2])
+nnRand.randomLayersInit([2, 3, 3], [0.9, 0.9])
 print nnRand.printS()
-print nnRand.eval([0.9, 0.1])
+print nnRand.eval([0.9, 0.9])

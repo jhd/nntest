@@ -8,7 +8,7 @@ class InputNeuron():
         self.value = value
 
     def eval(self, inputs=None):
-        
+
         print "Input: ", self.value
         return self.value
 

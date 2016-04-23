@@ -15,12 +15,12 @@ class Sigmoid():
             return float("inf")
         
 
-        total = -1 * self.bias
+        total = self.bias
         #1 / (1 + math.exp(-x))  Sigmoid function
         for (weight, input) in itertools.izip(self.weights, inputs):
             total += weight * input
         
-        output = 1 / (1 + math.exp(-total))
+        output = 1 / (1 + math.exp(-1 * total))
 
         print self, " ", inputs, " : ", output
 
