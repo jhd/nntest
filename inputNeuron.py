@@ -6,6 +6,7 @@ class InputNeuron():
     def __init__(self, value):
 
         self.value = value
+        self.activation = value
 
     def eval(self, inputs=None):
 

@@ -5,6 +5,7 @@ class Layer():
     def __init__(self, neurons):
 
         self.neurons = neurons
+        self.error = None
 
     def eval(self, inputs):
 

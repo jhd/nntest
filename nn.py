@@ -3,6 +3,7 @@ from connection import Connection
 from layer import Layer
 from inputNeuron import InputNeuron
 
+import itertools
 import numpy
 
 class NeuralNetwork():
@@ -63,6 +64,41 @@ class NeuralNetwork():
             layer.printS()
         print "]"
 
+    def outputError(self, targets):
+
+        for output, target in itertools.izip(self.network[len(self.network)-1].neurons, targets):
+            
+            output.error = (output.sig(output.weighedInput) - target)*output.activationPrime
+
+            print (output.sig(output.weighedInput) - target)*output.activationPrime
+
+    def fillbackError(self):
+        
+        eta = 5000
+
+        for layerIndex in range (len(self.network)-2, 0, -1):
+
+            layer = self.network[layerIndex]
+
+            for neuronIndex in range(0, len(layer.neurons)):
+                
+                prevError = 0
+
+                for prevNeuron in self.network[layerIndex+1].neurons:
+                    
+                    prevError += prevNeuron.error * prevNeuron.weights[neuronIndex]
+
+                layer.neurons[neuronIndex].error = prevError*layer.neurons[neuronIndex].activationPrime
+
+                layer.neurons[neuronIndex].bias -= eta * layer.neurons[neuronIndex].error
+
+                for weightIndex in range(0, len(layer.neurons[neuronIndex].weights)):
+
+                    layer.neurons[neuronIndex].weights[weightIndex] -=  eta * self.network[layerIndex-1].neurons[weightIndex].activation * layer.neurons[neuronIndex].error
+
+                print "Layer: ", layerIndex, " Sig: ", neuronIndex, " Error: ", layer.neurons[neuronIndex].error
+
+"""
 input1 = InputNeuron(0.9)
 input2 = InputNeuron(0.1)
 hidden1 = Sigmoid([0.5, 0.5], 0.2)
@@ -78,8 +114,14 @@ nn = NeuralNetwork([layerIn, layerHidden, layerOut])
 
 #print nn.printS()
 #print nn.eval([0.9, 0.1])
-
+"""
 nnRand = NeuralNetwork()
-nnRand.randomLayersInit([2, 3, 3], [0.9, 0.9])
-print nnRand.printS()
-print nnRand.eval([0.9, 0.9])
+nnRand.randomLayersInit([1, 1, 1], [0.2])
+#nnRand.printS()
+print nnRand.eval([0.5])
+nnRand.outputError([0.2])
+nnRand.fillbackError()
+#nnRand.printS()
+print nnRand.eval([0.5])
+nnRand.outputError([0.2])
+#nnRand.printS()
