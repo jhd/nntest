@@ -64,17 +64,25 @@ class NeuralNetwork():
             layer.printS()
         print "]"
 
-    def outputError(self, targets):
+    def outputError(self, targets): 
+
+        eta = 0.05
 
         for output, target in itertools.izip(self.network[len(self.network)-1].neurons, targets):
             
             output.error = (output.sig(output.weighedInput) - target)*output.activationPrime
 
             print (output.sig(output.weighedInput) - target)*output.activationPrime
+            
+        for weightIndex in range(0, len(output.weights)):
+
+                output.weights[weightIndex] -=  eta * self.network[len(self.network)-2].neurons[weightIndex].activation * output.error
+        
+        output.bias -= eta * output.error
 
     def fillbackError(self):
         
-        eta = 5000
+        eta = 0.05
 
         for layerIndex in range (len(self.network)-2, 0, -1):
 
@@ -115,6 +123,8 @@ nn = NeuralNetwork([layerIn, layerHidden, layerOut])
 #print nn.printS()
 #print nn.eval([0.9, 0.1])
 """
+
+"""
 nnRand = NeuralNetwork()
 nnRand.randomLayersInit([1, 1, 1], [0.2])
 #nnRand.printS()
@@ -125,3 +135,15 @@ nnRand.fillbackError()
 print nnRand.eval([0.5])
 nnRand.outputError([0.2])
 #nnRand.printS()
+"""
+
+nn = NeuralNetwork()
+nn.randomLayersInit([1, 1, 1], [0.5])
+target = 0.8
+
+for i in range(0, 10000):
+    nn.printS()
+    print nn.eval([0.5])
+    nn.outputError([0.2])
+    nn.fillbackError()
+
