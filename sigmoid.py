@@ -31,7 +31,7 @@ class Sigmoid():
         
         output = self.sig(total)
 
-        print self, " ", inputs, " : ", output
+        #print self, " ", inputs, " : ", output
         
         self.weighedInput = total
         self.activation = output

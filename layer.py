@@ -15,7 +15,7 @@ class Layer():
 
             outputs.append(neuron.eval(inputs))
 
-        print self, " ", inputs, " : ", outputs
+        #print self, " ", inputs, " : ", outputs
 
         return outputs
     

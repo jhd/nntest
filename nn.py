@@ -5,6 +5,7 @@ from inputNeuron import InputNeuron
 
 import itertools
 import numpy
+import matplotlib.pyplot as pyplot
 
 class NeuralNetwork():
 
@@ -66,13 +67,13 @@ class NeuralNetwork():
 
     def outputError(self, targets): 
 
-        eta = 0.05
+        eta = 0.5
 
         for output, target in itertools.izip(self.network[len(self.network)-1].neurons, targets):
             
             output.error = (output.sig(output.weighedInput) - target)*output.activationPrime
 
-            print (output.sig(output.weighedInput) - target)*output.activationPrime
+            #print (output.sig(output.weighedInput) - target)*output.activationPrime
             
         for weightIndex in range(0, len(output.weights)):
 
@@ -80,9 +81,11 @@ class NeuralNetwork():
         
         output.bias -= eta * output.error
 
+        return (output.sig(output.weighedInput) - target)*output.activationPrime
+
     def fillbackError(self):
         
-        eta = 0.05
+        eta = 0.5
 
         for layerIndex in range (len(self.network)-2, 0, -1):
 
@@ -104,7 +107,7 @@ class NeuralNetwork():
 
                     layer.neurons[neuronIndex].weights[weightIndex] -=  eta * self.network[layerIndex-1].neurons[weightIndex].activation * layer.neurons[neuronIndex].error
 
-                print "Layer: ", layerIndex, " Sig: ", neuronIndex, " Error: ", layer.neurons[neuronIndex].error
+                #print "Layer: ", layerIndex, " Sig: ", neuronIndex, " Error: ", layer.neurons[neuronIndex].error
 
 """
 input1 = InputNeuron(0.9)
@@ -138,12 +141,17 @@ nnRand.outputError([0.2])
 """
 
 nn = NeuralNetwork()
-nn.randomLayersInit([1, 1, 1], [0.5])
+nn.randomLayersInit([2, 20, 1], [0.5, 0.2])
 target = 0.8
-
-for i in range(0, 10000):
-    nn.printS()
-    print nn.eval([0.5])
+outputs = []
+for i in range(0, 500):
+    #nn.printS()
+    output = nn.eval([0.5, 0.2])
+    outputs.append(output)
+    print "Iter: ", i, " Output: ", output
     nn.outputError([0.2])
     nn.fillbackError()
 
+pyplot.plot(range(0, 500), outputs)
+pyplot.axis([0, 500, 0, 1])
+pyplot.show()

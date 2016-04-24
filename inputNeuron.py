@@ -10,7 +10,7 @@ class InputNeuron():
 
     def eval(self, inputs=None):
 
-        print "Input: ", self.value
+        #print "Input: ", self.value
         return self.value
 
     def printS(self):
